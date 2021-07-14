@@ -8,11 +8,9 @@ on:
     branches:
       - master
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    name: Build
+  setup:
+    name: Setup
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +30,16 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Test project
+      - name: Enable flutter web
+        run: flutter config --enable-web
+
+      - name: Cheks formatting
+        run: flutter format --set-exit-if-changed .
+
+      - name: Run linter
+        run: flutter analyze .
+
+      - name: Run tests
         run: flutter test
 
       - name: Build APK
@@ -55,7 +62,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: build
+    needs: setup
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
 
