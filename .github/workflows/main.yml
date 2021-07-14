@@ -62,7 +62,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: build_web
+    needs: setup
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
 
